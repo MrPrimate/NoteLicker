@@ -6,14 +6,12 @@
 
 Enhanced Scene Notes/Pins for Foundry.
 
-- Add the ability to jump straight to a journal header.
-- Create icons for scenes based on the journal name, e.g. `1a. Kobold Nursery` would generate a nice icon with `1a` in a circle.
-
 ## About
 
-This is inspired by the previous [pathbuilder2e-import](https://github.com/kobseryqum/foundry-pathbuilder2e-import) package, but is written afresh from the ground up, capturing some of my experience from [DDB Importer](https://github.com/MrPrimate/ddb-importer).
+This module currently offers two improvements to journal pins.
 
-To use this module the users must have the CREATE ACTOR ability, as it creates temporary actors as part of the import process.
+- Add the ability to jump to an anchor link. This is similar to the functionality in [JAL](https://github.com/aMediocreDad/jal) and DDB Importer. This supports the flags used by DDB Importer/Adventure Muncher as well as JAL. If JAL is active, Note Licker will not enable the anchor linking functionality.
+- Create icons for scenes based on the journal name, e.g. `1a. Kobold Nursery` would generate a nice icon with `1a` in a circle. These are similar to the icons that are created by DDB Importer when importing an adventure.
 
 ## Known Issues
 
