@@ -1,6 +1,6 @@
-import logger from "../logger.js";
-import utils from "../utils.js";
-import CONSTANTS from "../constants.js";
+import logger from "../logger.mjs";
+import utils from "../utils.mjs";
+import CONSTANTS from "../constants.mjs";
 
 function getOptions(page, current) {
   let options = "<option></option>";

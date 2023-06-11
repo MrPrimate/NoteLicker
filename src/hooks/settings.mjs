@@ -1,4 +1,4 @@
-import CONSTANTS from "../constants.js";
+import CONSTANTS from "../constants.mjs";
 
 async function resetSettings() {
   for (const [name, data] of Object.entries(CONSTANTS.GET_DEFAULT_SETTINGS())) {

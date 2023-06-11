@@ -1,5 +1,5 @@
-import CONSTANTS from "./constants.js";
-import utils from "./utils.js";
+import CONSTANTS from "./constants.mjs";
+import utils from "./utils.mjs";
 
 const logger = {
   _showMessage: (logLevel, data) => {
