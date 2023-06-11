@@ -1,0 +1,39 @@
+{
+  "id": "notelicker",
+  "author": "MrPrimate",
+  "title": "Note Licker",
+  "license": "MIT License",
+  "description": "Enhance your scene notes. Adds header jumps, and auto iconizing",
+  "version": "999.0.0",
+  "download": "",
+  "manifest": "https://raw.githubusercontent.com/MrPrimate/NoteLicker/main/module-dev.json",
+  "url": "https://github.com/MrPrimate/NoteLicker",
+  "readme": "https://github.com/MrPrimate/NoteLicker/blob/main/README.md",
+  "changelog": "https://github.com/MrPrimate/NoteLicker/blob/main/CHANGELOG.md",
+  "compatibility": {
+    "minimum": "10.291",
+    "verified": 11
+  },
+  "authors": [
+    {
+      "name": "MrPrimate",
+      "email": "jack@mrprimate.co.uk",
+      "url": "https://mrprimate.co.uk",
+      "patreon": "https://www.patreon.com/MrPrimate",
+      "discord": "https://discord.gg/WzPuRuDJVP"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "esmodules": ["src/module.js"],
+  "styles": [
+    "./css/default.css"
+  ],
+  "packs": [],
+  "socket": true
+}
