@@ -1,4 +1,19 @@
 import CONSTANTS from "../constants.mjs";
+import utils from "../lib/utils.mjs";
+import { DirectoryPicker } from "../lib/DirectoryPicker.mjs";
+
+setProperty(CONFIG, "NOTELICKER", {
+  module: "Note Licker",
+  KNOWN: {
+    CHECKED_DIRS: new Set(),
+    FILES: new Set(),
+    DIRS: new Set(),
+    FORGE: {
+      TARGET_URL_PREFIX: {},
+      TARGETS: {},
+    },
+  },
+});
 
 async function resetSettings() {
   for (const [name, data] of Object.entries(CONSTANTS.GET_DEFAULT_SETTINGS())) {
@@ -13,21 +28,21 @@ class ResetSettingsDialog extends FormApplication {
     super(...args);
     // eslint-disable-next-line no-constructor-return
     return new Dialog({
-      title: game.i18n.localize(`${CONSTANTS.FLAG_NAME}.Dialogs.ResetSettings.Title`),
+      title: game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Title`),
       content: `<p class="${CONSTANTS.FLAG_NAME}-dialog-important">${game.i18n.localize(
-        `${CONSTANTS.FLAG_NAME}.Dialogs.ResetSettings.Content`
+        `${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Content`
       )}</p>`,
       buttons: {
         confirm: {
           icon: '<i class="fas fa-check"></i>',
-          label: game.i18n.localize(`${CONSTANTS.FLAG_NAME}.Dialogs.ResetSettings.Confirm`),
+          label: game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Confirm`),
           callback: () => {
             resetSettings();
           },
         },
         cancel: {
           icon: '<i class="fas fa-times"></i>',
-          label: game.i18n.localize(`${CONSTANTS.FLAG_NAME}.Dialogs.ResetSettings.Cancel`),
+          label: game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Cancel`),
         },
       },
       default: "cancel",
@@ -49,4 +64,13 @@ export function registerSettings() {
     game.settings.register(CONSTANTS.FLAG_NAME, name, data);
   }
 
+}
+
+export function createDirectories() {
+  if (game.user.isGM) {
+    const iconUploadDir = utils.setting("ICON_UPLOAD_DIR");
+    console.warn(iconUploadDir)
+    let result = DirectoryPicker.verifyPath(DirectoryPicker.parse(iconUploadDir));
+    console.warn(result)
+  }
 }

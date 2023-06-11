@@ -1,5 +1,5 @@
 import logger from "../logger.mjs";
-import utils from "../utils.mjs";
+import utils from "../lib/utils.mjs";
 import CONSTANTS from "../constants.mjs";
 
 function getOptions(page, current) {

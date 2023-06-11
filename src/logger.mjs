@@ -1,5 +1,5 @@
 import CONSTANTS from "./constants.mjs";
-import utils from "./utils.mjs";
+import utils from "./lib/utils.mjs";
 
 const logger = {
   _showMessage: (logLevel, data) => {

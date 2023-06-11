@@ -21,3 +21,14 @@ This module currently offers two improvements to journal pins.
 ## Bugs and Issues
 
 Please open bugs and issues on [github](https://github.com/MrPrimate/NoteLicker/issues/new/choose), or via the Discord channel [#note-licker](https://discord.gg/M6jvpfreNd).
+
+
+## Scripting
+
+You can create icons using the API as follows:
+
+```javascript
+let path = await game.modules.get("notelicker")?.api.generateIcon("1a. Terror of fun");
+```
+
+This will return the path to the new icon, which you can use to update a note or other.

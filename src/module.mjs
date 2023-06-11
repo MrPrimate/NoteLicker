@@ -1,12 +1,13 @@
-import { anchorInjection } from "./hooks/anchorInjection.js";
-import { registerAPI } from "./hooks/api.js";
-import { registerSettings } from "./hooks/settings.js";
+import { anchorInjection } from "./hooks/anchorInjection.mjs";
+import { registerAPI } from "./hooks/api.mjs";
+import { createDirectories, registerSettings } from "./hooks/settings.mjs";
 
 Hooks.once("init", () => {
   registerSettings();
 });
 
 Hooks.once("ready", () => {
+  createDirectories();
   registerAPI();
   anchorInjection();
 });

@@ -19,6 +19,10 @@
       "EnableAnchorLinks": {
         "Name": "Enable anchor links?",
         "Hint": "Scene pins will be able to jump to anchors in the journals. Not currently compatible with Monks Enhanced Journals."
+      },
+      "IconUploadDir": {
+        "Name": "Icon upload directory",
+        "Hint": "The directory to upload icons to."
       }
     },
     "Dialogs": {
