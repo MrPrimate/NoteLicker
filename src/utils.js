@@ -21,6 +21,24 @@ const utils = {
     return s.charAt(0).toUpperCase() + s.slice(1);
   },
 
+  stripHtml: (html) => {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  },
+
+  htmlToElement: (html) => {
+    const template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
+  },
+
+  htmlToDoc: (text) => {
+    const parser = new DOMParser();
+    return parser.parseFromString(text, "text/html");
+  },
+
   setting: (key) => {
     return game.settings.get(CONSTANTS.FLAG_NAME, CONSTANTS.SETTINGS[key]);
   },

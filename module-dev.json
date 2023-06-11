@@ -30,7 +30,7 @@
       "path": "lang/en.json"
     }
   ],
-  "esmodules": ["src/module.js"],
+  "esmodules": ["src/module.mjs"],
   "styles": [
     "./css/default.css"
   ],
