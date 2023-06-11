@@ -64,11 +64,8 @@ async function uploadFile(source, path, file, options) {
 
 async function importRawFile(targetDirectory, fileName, content, mimeType) {
   try {
-    console.warn("Importing file")
     const parsedUploadPath = DirectoryPicker.parse(targetDirectory);
-    console.warn("parsed", parsedUploadPath);
     const returnPath = await FileHelper.getFileUrl(targetDirectory, fileName);
-    console.warn("returnPath", {returnPath});
 
     if (!CONFIG.NOTELICKER.KNOWN.CHECKED_DIRS.has(parsedUploadPath.current)) {
       logger.debug(`Checking dir path ${parsedUploadPath.current}`);
@@ -81,7 +78,7 @@ async function importRawFile(targetDirectory, fileName, content, mimeType) {
 
     if (!CONFIG.NOTELICKER.KNOWN.FILES.has(returnPath)) {
       logger.debug(`Importing raw file to ${targetDirectory} as ${fileName}`);
-      const fileData = new File([content], filename, { type: mimeType });
+      const fileData = new File([content], fileName, { type: mimeType });
       await uploadFile(parsedUploadPath.activeSource, `${parsedUploadPath.current}`, fileData, {
         bucket: parsedUploadPath.bucket,
       });
