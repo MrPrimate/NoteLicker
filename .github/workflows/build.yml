@@ -1,4 +1,4 @@
-name: pathmuncher build
+name: notelicker build
 
 on:
   workflow_dispatch:
