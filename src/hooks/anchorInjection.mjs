@@ -56,6 +56,11 @@ export function anchorInjection() {
     return;
   }
 
+  if (game.modules.get("ddb-importer")?.active) {
+    logger.warn("Anchor injection already loaded from ddb-importer. Skipping.");
+    return;
+  }
+
   if (!utils.setting("ENABLE_ANCHOR_LINKS")) return;
 
   Hooks.on("activateNote", (note, options) => {
