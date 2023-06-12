@@ -4,7 +4,7 @@ import CONSTANTS from "../constants.mjs";
 
 function getOptions(page, current) {
   let options = "<option></option>";
-  if (page?.type === "text") {
+  if (page?.toc) {
     for (const section of Object.values(page.toc)) {
       options += `<option value="${section.slug}"${section.slug === current ? " selected" : ""}>${section.text}</option>`;
     }
