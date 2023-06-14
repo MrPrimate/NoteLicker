@@ -60,7 +60,8 @@
     "fetchWithTimeout": true,
     "Adventure": true,
     "AdventureImporter": true,
-    "DocumentSheetConfig": true
+    "DocumentSheetConfig": true,
+    "NoteConfig": true
   },
   "parserOptions": {
     "ecmaVersion": 2022,

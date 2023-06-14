@@ -16,6 +16,10 @@
         "error": "ERROR - Errors only",
         "off": "OFF"
       },
+      "EnableDynamicIcons": {
+        "Name": "Enable dynamic note icons?",
+        "Hint": "This will dynamically update note icons to a small number/letter. e.g. '1a. Strange Door' will become a circle icon with '1a' in it"
+      },
       "EnableAnchorLinks": {
         "Name": "Enable anchor links?",
         "Hint": "Scene pins will be able to jump to anchors in the journals. Not currently compatible with Monks Enhanced Journals."

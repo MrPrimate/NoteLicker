@@ -10,17 +10,17 @@ Enhanced Scene Notes/Pins for Foundry.
 
 This module currently offers two improvements to journal pins.
 
+- Create icons for scenes _on the fly_ based on the journal name, e.g. `1a. Kobold Nursery` would generate a nice icon with `1a` in a circle. These are similar to the icons that are created by DDB Importer when importing an adventure.s
 - Add the ability to jump to an anchor link. This is similar to the functionality in [JAL](https://github.com/aMediocreDad/jal) and DDB Importer. This supports the flags used by DDB Importer/Adventure Muncher as well as JAL. If JAL is active, Note Licker will not enable the anchor linking functionality.
-- Create icons for scenes based on the journal name, e.g. `1a. Kobold Nursery` would generate a nice icon with `1a` in a circle. These are similar to the icons that are created by DDB Importer when importing an adventure.
 
 ## Known Issues
 
 - Journal header anchor linking won't work with Monks Enhanced Journals.
-- If using DDB Importer earlier than v3.4.33 the journal anchor linking will clash.
+- If JAL or DDB Importer are active the anchor injection will not be enabled.
 
 ## Bugs and Issues
 
-Please open bugs and issues on [github](https://github.com/MrPrimate/NoteLicker/issues/new/choose), or via the Discord channel [#note-licker](https://discord.gg/M6jvpfreNd).
+Please open bugs and issues on [github](https://github.com/MrPrimate/NoteLicker/issues/new/choose), or via the Discord channel [#bugs](https://discord.gg/aUQBCa9bv8).
 
 
 ## Scripting

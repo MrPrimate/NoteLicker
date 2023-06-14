@@ -12,6 +12,7 @@ const CONSTANTS = {
     ENABLE_ANCHOR_LINKS: "enable-anchor-links",
     AUTO_ICONIZE: "auto-iconize",
     ICON_UPLOAD_DIR: "icon-upload-dir",
+    ENABLE_DYNAMIC_ICONS: "enable-dynamic-icons",
   },
 
   BAD_WORDS: ["The", "At", "Who", "the"],
@@ -83,6 +84,16 @@ CONSTANTS.DEFAULT_SETTINGS = {
     default: "WARN",
   },
 
+  [CONSTANTS.SETTINGS.ENABLE_DYNAMIC_ICONS]: {
+    name: `${CONSTANTS.SHORT_NAME}.Settings.EnableDynamicIcons.Name`,
+    hint: `${CONSTANTS.SHORT_NAME}.Settings.EnableDynamicIcons.Hint`,
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: debouncedReload,
+  },
+
   [CONSTANTS.SETTINGS.ENABLE_ANCHOR_LINKS]: {
     name: `${CONSTANTS.SHORT_NAME}.Settings.EnableAnchorLinks.Name`,
     hint: `${CONSTANTS.SHORT_NAME}.Settings.EnableAnchorLinks.Hint`,
@@ -97,7 +108,7 @@ CONSTANTS.DEFAULT_SETTINGS = {
     name: `${CONSTANTS.SHORT_NAME}.Settings.IconUploadDir.Name`,
     hint: `${CONSTANTS.SHORT_NAME}.Settings.IconUploadDir.Hint`,
     scope: "world",
-    config: true,
+    config: false,
     type: DirectoryPicker.Directory,
     default: "[data] notelicker/icons",
   },

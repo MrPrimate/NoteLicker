@@ -8,11 +8,12 @@ setProperty(CONFIG, "NOTELICKER", {
     CHECKED_DIRS: new Set(),
     FILES: new Set(),
     DIRS: new Set(),
+    LOOKUPS: new Map(),
     FORGE: {
       TARGET_URL_PREFIX: {},
       TARGETS: {},
     },
-  },
+  }
 });
 
 async function resetSettings() {
@@ -67,7 +68,7 @@ export function registerSettings() {
 }
 
 export function createDirectories() {
-  if (game.user.isGM) {
+  if (game.user.isGM && CONFIG.NOTELICKER.CREATE_DIRS) {
     const iconUploadDir = utils.setting("ICON_UPLOAD_DIR");
     DirectoryPicker.verifyPath(DirectoryPicker.parse(iconUploadDir));
   }

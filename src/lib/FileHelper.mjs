@@ -10,6 +10,7 @@ const FileHelper = {
     return nameArray.join(".");
   },
 
+
   /**
    * Read data from a user provided File object
    * @param {File} file           A File object
@@ -37,10 +38,16 @@ const FileHelper = {
     a.click();
   },
 
-  fileExistsUpdate: (fileList) => {
+  fileExistsUpdate: (parsedDir, directoryPath, fileList) => {
     const targetFiles = fileList.filter((f) => !CONFIG.NOTELICKER.KNOWN.FILES.has(f));
     for (const file of targetFiles) {
       CONFIG.NOTELICKER.KNOWN.FILES.add(file);
+      const split = file.split(parsedDir.current);
+      if (split.length > 1) {
+        const fileName = split[1].startsWith("/") ? split[1] : `/${split[1]}`;
+        CONFIG.NOTELICKER.KNOWN.FILES.add(`${directoryPath}${fileName}`);
+        CONFIG.NOTELICKER.KNOWN.LOOKUPS.set(`${directoryPath}${fileName}`, file);
+      }
     }
   },
 
@@ -70,7 +77,7 @@ const FileHelper = {
       const fileList = await DirectoryPicker.browse(dir.activeSource, dir.current, {
         bucket: dir.bucket,
       });
-      FileHelper.fileExistsUpdate(fileList.files);
+      FileHelper.fileExistsUpdate(dir, directoryPath, fileList.files);
       FileHelper.dirExistsUpdate(fileList.dirs);
       // lets do some forge fun because
       if (typeof ForgeVTT !== "undefined" && ForgeVTT?.usingTheForge) {
@@ -97,22 +104,22 @@ const FileHelper = {
   },
 
   fileExists: async (directoryPath, filename) => {
-    const fileUrl = await FileHelper.getFileUrl(directoryPath, filename);
-    let existingFile = CONFIG.NOTELICKER.KNOWN.FILES.has(fileUrl);
+    const fileRef = `${directoryPath}/${filename}`;
+    let existingFile = CONFIG.NOTELICKER.KNOWN.FILES.has(fileRef);
     if (existingFile) return true;
 
-    logger.debug(`Checking for ${filename} at ${fileUrl}...`);
+    logger.debug(`Checking for ${filename} at ${fileRef}...`);
     await FileHelper.generateCurrentFiles(directoryPath);
 
-    const filePresent = CONFIG.NOTELICKER.KNOWN.FILES.has(fileUrl);
+    const filePresent = CONFIG.NOTELICKER.KNOWN.FILES.has(fileRef);
 
     if (filePresent) {
-      logger.debug(`Found ${fileUrl} after directory scan.`);
+      logger.debug(`Found ${fileRef} after directory scan.`);
     } else {
-      logger.debug(`Could not find ${fileUrl}`, {
+      logger.debug(`Could not find ${fileRef}`, {
         directoryPath,
         filename,
-        fileUrl,
+        fileUrl: fileRef,
       });
     }
 
@@ -188,11 +195,86 @@ const FileHelper = {
         }
       }
     } catch (exception) {
-      throw new Error(
-        'Unable to determine file URL for directoryPath"' + directoryPath + '" and filename"' + filename + '"'
-      );
+      throw new Error(`Unable to determine file URL for directoryPath "${directoryPath}" and filename "${filename}"`);
     }
     return encodeURI(uri);
+  },
+
+  forgeUploadFile: async (path, file) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("path", `${path}/${file.name}`);
+
+    const response = await ForgeAPI.call("assets/upload", fd);
+    if (!response || response.error) {
+      ui.notifications.error(response ? response.error : "An unknown error occured accessing The Forge API");
+      return false;
+    } else {
+      return { path: response.url };
+    }
+  },
+
+  /**
+   * Uploads a file to Foundry without the UI Notification
+   * @param  {string} source
+   * @param  {string} path
+   * @param  {blog} file
+   * @param  {object} options
+   */
+  uploadFileViaPost: async (source, path, file, options) => {
+    if (typeof ForgeVTT !== "undefined" && ForgeVTT?.usingTheForge) {
+      return FileHelper.forgeUploadFile(path, file);
+    }
+
+    const fd = new FormData();
+    fd.set("source", source);
+    fd.set("target", path);
+    fd.set("upload", file);
+    Object.entries(options).forEach((o) => fd.set(...o));
+
+    const request = await fetch(FilePicker.uploadURL, { method: "POST", body: fd });
+    if (request.status === 413) {
+      return ui.notifications.error(game.i18n.localize("FILES.ErrorTooLarge"));
+    } else if (request.status !== 200) {
+      return ui.notifications.error(game.i18n.localize("FILES.ErrorSomethingWrong"));
+    }
+    return request.path;
+  },
+
+  importRawFile: async (targetDirectory, fileName, content, mimeType) => {
+    try {
+      const parsedUploadPath = DirectoryPicker.parse(targetDirectory);
+
+      if (!CONFIG.NOTELICKER.KNOWN.CHECKED_DIRS.has(parsedUploadPath.current)) {
+        logger.debug(`Checking dir path ${parsedUploadPath.current}`, parsedUploadPath);
+        await DirectoryPicker.verifyPath(parsedUploadPath, `${parsedUploadPath.current}`);
+        await FileHelper.generateCurrentFiles(parsedUploadPath.current);
+        CONFIG.NOTELICKER.KNOWN.CHECKED_DIRS.add(parsedUploadPath.current);
+      }
+
+      const pathKey = `${targetDirectory}/${fileName}`;
+      const filePath = `${parsedUploadPath.current}/${fileName}`;
+
+      if (!CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey)) {
+        logger.debug(`Importing raw file to ${filePath}`, {
+          pathKey,
+          filePath,
+        });
+        const fileData = new File([content], fileName, { type: mimeType });
+        const targetPath = await FileHelper.uploadFileViaPost(parsedUploadPath.activeSource, `${filePath}`, fileData, {
+          bucket: parsedUploadPath.bucket,
+        });
+        CONFIG.NOTELICKER.KNOWN.FILES.add(pathKey);
+        CONFIG.NOTELICKER.KNOWN.LOOKUPS.set(`${pathKey}}`, targetPath);
+      } else {
+        logger.debug(`File already imported ${pathKey}`);
+      }
+
+      return `${CONFIG.DDBI.KNOWN.LOOKUPS.get(`${pathKey}`)}`;
+    } catch (err) {
+      logger.error(`Error importing image file ${targetDirectory}/${fileName} : ${err.message}`, { err });
+      return undefined;
+    }
   },
 
 };
