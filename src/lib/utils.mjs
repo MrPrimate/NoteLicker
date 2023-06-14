@@ -16,6 +16,14 @@ const utils = {
     });
   },
 
+  unPad: (match, p1) => {
+    if (isNaN(parseInt(p1))) {
+      return p1;
+    } else {
+      return parseInt(p1);
+    }
+  },
+
   capitalize: (s) => {
     if (typeof s !== "string") return "";
     return s.charAt(0).toUpperCase() + s.slice(1);

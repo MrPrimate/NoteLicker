@@ -4,16 +4,6 @@ import logger from "../logger.mjs";
 import { DirectoryPicker } from "../lib/DirectoryPicker.mjs";
 import FileHelper from "../lib/FileHelper.mjs";
 
-function unPad(match, p1) {
-  if (isNaN(parseInt(p1))) {
-    return p1;
-  } else {
-    return parseInt(p1);
-  }
-}
-
-
-
 /**
  * Uploads a file to Forge Asset Library without the UI Notification
  * @param  {string} source
@@ -96,7 +86,7 @@ async function importRawFile(targetDirectory, fileName, content, mimeType) {
 }
 
 export async function generateIcon(title) {
-  const stub = (title.trim().split(".")[0].split(" ")[0].split(":")[0]).replace(/(\d+)/, unPad);
+  const stub = (title.trim().split(".")[0].split(" ")[0].split(":")[0]).replace(/(\d+)/, utils.unPad);
   if (stub.length <= 4 && !CONSTANTS.BAD_WORDS.includes(stub)) {
     const targetDirectory = utils.setting("ICON_UPLOAD_DIR");
     const iconName = `${stub}.svg`;

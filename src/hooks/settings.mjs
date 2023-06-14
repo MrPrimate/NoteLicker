@@ -69,8 +69,6 @@ export function registerSettings() {
 export function createDirectories() {
   if (game.user.isGM) {
     const iconUploadDir = utils.setting("ICON_UPLOAD_DIR");
-    console.warn(iconUploadDir)
-    let result = DirectoryPicker.verifyPath(DirectoryPicker.parse(iconUploadDir));
-    console.warn(result)
+    DirectoryPicker.verifyPath(DirectoryPicker.parse(iconUploadDir));
   }
 }
