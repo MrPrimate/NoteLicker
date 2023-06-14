@@ -1,11 +1,27 @@
 /* eslint-disable no-continue */
 import Icons from "../lib/Icons.mjs";
 
+function determineAnchorName(note) {
+  const text = note.text;
+
+  if (!text || text.trim() === "") return undefined;
+
+  const pageName = note.page?.name;
+  if (!pageName) return text;
+
+  if (text.startsWith(`${pageName}:`)) {
+    const reg = new RegExp(`^${pageName}:`);
+    return text.replace(reg, "").trim();
+  }
+  return text;
+}
+
+
 export async function dynamicIcons() {
   Hooks.on("refreshNote", (note) => {
     if (note.document.texture.src.startsWith("blob")) return;
 
-    const data = (note.text?.length > 0) ? Icons.generateIconData(note.text) : undefined;
+    const data = (note.text?.length > 0) ? Icons.generateIconData(determineAnchorName(note)) : undefined;
 
     if (data) {
       note.iconSrc = data.url;
@@ -18,7 +34,7 @@ export async function dynamicIcons() {
   Hooks.on("canvasReady", (canvas) => {
     for (const note of (canvas.notes.placeables ?? [])) {
       if (note.document.texture.src.startsWith("blob")) continue;
-      const data = (note.text?.length > 0) ? Icons.generateIconData(note.text) : undefined;
+      const data = (note.text?.length > 0) ? Icons.generateIconData(determineAnchorName(note)) : undefined;
 
       if (data) {
         note.iconSrc = data.url;
