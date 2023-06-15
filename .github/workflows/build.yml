@@ -40,7 +40,7 @@ jobs:
     - name: Webpack
       run: npm run build
     - name: Create Release Zip
-      run: zip -r ./notelicker.zip module.json dist templates css lang LICENSE.md       # Add folders/files here
+      run: zip -r ./notelicker.zip module.json storage dist templates css lang LICENSE.md       # Add folders/files here
     - name: Create Release                                # Create an additional release for this version
       id: create_versioned_release
       uses: ncipollo/release-action@v1
