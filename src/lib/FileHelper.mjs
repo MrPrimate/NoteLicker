@@ -173,34 +173,6 @@ const FileHelper = {
     return uri;
   },
 
-  getFileUrl: async (directoryPath, filename) => {
-    let uri;
-    try {
-      if (typeof ForgeVTT !== "undefined" && ForgeVTT?.usingTheForge) {
-        uri = await FileHelper.getForgeUrl(directoryPath, filename);
-        return uri;
-      } else {
-        const dir = DirectoryPicker.parse(directoryPath);
-        if (dir.activeSource == "data") {
-          // Local on-server file system
-          uri = dir.current + "/" + filename;
-        } else if (dir.activeSource == "forgevtt") {
-          const status = ForgeAPI.lastStatus || (await ForgeAPI.status());
-          const userId = status.user;
-          uri = `https://assets.forge-vtt.com/${userId}/${dir.current}/${filename}`;
-        } else if (dir.activeSource == "s3") {
-          // S3 Bucket
-          uri = `https://${dir.bucket}.${game.data.files.s3.endpoint.hostname}/${dir.current}/${filename}`;
-        } else {
-          logger.error(`${CONSTANTS.MODULE_NAME} cannot handle files stored in that location`, dir);
-        }
-      }
-    } catch (exception) {
-      throw new Error(`Unable to determine file URL for directoryPath "${directoryPath}" and filename "${filename}"`);
-    }
-    return encodeURI(uri);
-  },
-
   forgeUploadFile: async (path, file) => {
     const fd = new FormData();
     fd.append("file", file);
@@ -213,34 +185,6 @@ const FileHelper = {
     } else {
       return { path: response.url };
     }
-  },
-
-  /**
-   * Uploads a file to Foundry without the UI Notification
-   * @param  {string} source
-   * @param  {string} path
-   * @param  {blog} file
-   * @param  {object} options
-   */
-  uploadFileViaPost: async (source, path, file, options) => {
-    if (typeof ForgeVTT !== "undefined" && ForgeVTT?.usingTheForge) {
-      return FileHelper.forgeUploadFile(path, file);
-    }
-
-    const fd = new FormData();
-    fd.set("source", source);
-    fd.set("target", path);
-    fd.set("upload", file);
-    Object.entries(options).forEach((o) => fd.set(...o));
-
-    const request = await fetch(FilePicker.uploadURL, { method: "POST", body: fd });
-    console.warn("request response", request);
-    if (request.status === 413) {
-      return ui.notifications.error(game.i18n.localize("FILES.ErrorTooLarge"));
-    } else if (request.status !== 200) {
-      return ui.notifications.error(game.i18n.localize("FILES.ErrorSomethingWrong"));
-    }
-    return request.path;
   },
 
   importRawFile: async (targetDirectory, fileName, content, mimeType) => {
