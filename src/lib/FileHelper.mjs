@@ -1,6 +1,5 @@
 import { DirectoryPicker } from "./DirectoryPicker.mjs";
 import logger from "../logger.mjs";
-import CONSTANTS from "../constants.mjs";
 
 const FileHelper = {
   BAD_DIRS: ["[data]", "[data] ", "", null],

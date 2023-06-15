@@ -5,8 +5,8 @@
   "description": "Foundry VTT module for enhancing notes and their icons",
   "private": true,
   "scripts": {
-    "lint": "npx eslint src/",
-    "lint-fix": "npx eslint src/ --fix",
+    "lint": "npx eslint --ext .mjs src/",
+    "lint-fix": "npx eslint --ext .mjs src/ --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
