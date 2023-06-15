@@ -1,6 +1,7 @@
 import CONSTANTS from "../constants.mjs";
 import utils from "../lib/utils.mjs";
 import { DirectoryPicker } from "../lib/DirectoryPicker.mjs";
+import FileHelper from "../lib/FileHelper.mjs";
 
 setProperty(CONFIG, "NOTELICKER", {
   module: "Note Licker",
@@ -67,9 +68,12 @@ export function registerSettings() {
 
 }
 
-export function createDirectories() {
-  if (game.user.isGM && CONFIG.NOTELICKER.CREATE_DIRS) {
-    const iconUploadDir = utils.setting("ICON_UPLOAD_DIR");
-    DirectoryPicker.verifyPath(DirectoryPicker.parse(iconUploadDir));
+export async function createDirectories() {
+  const iconUploadDir = utils.setting("ICON_UPLOAD_DIR");
+  const parsedDir = DirectoryPicker.parse(iconUploadDir);
+  CONFIG.NOTELICKER.tempPath = parsedDir.current;
+  if (game.user.isGM) {
+    await DirectoryPicker.verifyPath(parsedDir);
   }
+  await FileHelper.generateCurrentFiles(iconUploadDir);
 }

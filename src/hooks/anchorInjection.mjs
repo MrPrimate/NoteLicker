@@ -14,8 +14,9 @@ function getOptions(page, current) {
 
 function addSlugField(element, slug, document) {
   const titleInput = element.querySelector("input[name='text']");
+  const label = game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Labels.JumpToAnchor`);
   const slugHTML = `<div class="form-group">
-  <label>Jump to Page Anchor</label>
+  <label>${label}</label>
   <div class="form-fields">
       <select name="slug" >${getOptions(document.page, slug)}</select>
   </div>

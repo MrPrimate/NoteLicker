@@ -4,6 +4,38 @@ import FileHelper from "./FileHelper.mjs";
 
 export default class Icons {
 
+  static keepBorder(document) {
+    return document.getFlag(CONSTANTS.FLAG_NAME, "keepBorder")
+      ?? getProperty(document, ".flags.backgroundless-pins.hasBackground")
+      ?? false;
+  }
+
+  static textureExists(src) {
+    if (!src
+      || src.includes(CONFIG.NOTELICKER.tempPath)
+      || src.startsWith("blob")
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static determineAnchorName(note) {
+    const text = note.text;
+
+    if (!text || text.trim() === "") return undefined;
+
+    const pageName = note.page?.name;
+    if (!pageName) return text;
+
+    if (text.startsWith(`${pageName}:`)) {
+      const reg = new RegExp(`^${pageName}:`);
+      return text.replace(reg, "").trim();
+    }
+    return text;
+  }
+
   static convertSvgToDataURL(svgText) {
     const svgBlob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
@@ -40,6 +72,6 @@ export default class Icons {
   }
 
   static async generateIcon(title) {
-    return (await Icons.generateIconData(title, true))?.url;;
+    return (await Icons.generateIconData(title, true))?.url;
   }
 }

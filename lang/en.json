@@ -24,6 +24,10 @@
         "Name": "Enable anchor links?",
         "Hint": "Scene pins will be able to jump to anchors in the journals. Not currently compatible with Monks Enhanced Journals."
       },
+      "EnableIconBorderRemoval": {
+        "Name": "Enable icon border removal?",
+        "Hint": "This will remove the border around icons, similar to backgroundless-pins module."
+      },
       "IconUploadDir": {
         "Name": "Icon upload directory",
         "Hint": "The directory to upload icons to."
@@ -40,6 +44,9 @@
     "Chat": {},
     "Notifications": {},
     "Labels": {
+      "ShowIconBorder": "Show icon border?",
+      "DontAutoIcon": "Don't auto generate icon?",
+      "JumpToAnchor": "Jump to Page Anchor"
     },
     "Folders": {}
   }

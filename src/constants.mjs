@@ -13,6 +13,7 @@ const CONSTANTS = {
     AUTO_ICONIZE: "auto-iconize",
     ICON_UPLOAD_DIR: "icon-upload-dir",
     ENABLE_DYNAMIC_ICONS: "enable-dynamic-icons",
+    ENABLE_ICON_BORDER_REMOVAL: "enable-icon-border-removal",
   },
 
   BAD_WORDS: ["The", "At", "Who", "the"],
@@ -104,13 +105,23 @@ CONSTANTS.DEFAULT_SETTINGS = {
     onChange: debouncedReload,
   },
 
+  [CONSTANTS.SETTINGS.ENABLE_ICON_BORDER_REMOVAL]: {
+    name: `${CONSTANTS.SHORT_NAME}.Settings.EnableIconBorderRemoval.Name`,
+    hint: `${CONSTANTS.SHORT_NAME}.Settings.EnableIconBorderRemoval.Hint`,
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: debouncedReload,
+  },
+
   [CONSTANTS.SETTINGS.ICON_UPLOAD_DIR]: {
     name: `${CONSTANTS.SHORT_NAME}.Settings.IconUploadDir.Name`,
     hint: `${CONSTANTS.SHORT_NAME}.Settings.IconUploadDir.Hint`,
     scope: "world",
     config: false,
     type: DirectoryPicker.Directory,
-    default: "[data] notelicker/icons",
+    default: `[data] modules/${CONSTANTS.FLAG_NAME}/storage`,
   },
 
 };

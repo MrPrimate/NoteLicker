@@ -61,7 +61,11 @@
     "Adventure": true,
     "AdventureImporter": true,
     "DocumentSheetConfig": true,
-    "NoteConfig": true
+    "NoteConfig": true,
+    "libWrapper": true,
+    "Color": true,
+    "ControlIcon": true,
+    "loadTexture": true
   },
   "parserOptions": {
     "ecmaVersion": 2022,
