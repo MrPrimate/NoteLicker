@@ -1,5 +1,6 @@
 import { DirectoryPicker } from "./DirectoryPicker.mjs";
 import logger from "../logger.mjs";
+import CONSTANTS from "../constants.mjs";
 
 const FileHelper = {
   BAD_DIRS: ["[data]", "[data] ", "", null],
@@ -191,7 +192,7 @@ const FileHelper = {
           // S3 Bucket
           uri = `https://${dir.bucket}.${game.data.files.s3.endpoint.hostname}/${dir.current}/${filename}`;
         } else {
-          logger.error("DDB Importer cannot handle files stored in that location", dir);
+          logger.error(`${CONSTANTS.MODULE_NAME} cannot handle files stored in that location`, dir);
         }
       }
     } catch (exception) {
@@ -233,6 +234,7 @@ const FileHelper = {
     Object.entries(options).forEach((o) => fd.set(...o));
 
     const request = await fetch(FilePicker.uploadURL, { method: "POST", body: fd });
+    console.warn("request response", request);
     if (request.status === 413) {
       return ui.notifications.error(game.i18n.localize("FILES.ErrorTooLarge"));
     } else if (request.status !== 200) {
@@ -256,21 +258,21 @@ const FileHelper = {
       const filePath = `${parsedUploadPath.current}/${fileName}`;
 
       if (!CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey)) {
-        logger.debug(`Importing raw file to ${filePath}`, {
+        logger.debug(`Adding cached file ${fileName} to ${targetDirectory}`, {
           pathKey,
           filePath,
         });
         const fileData = new File([content], fileName, { type: mimeType });
-        const targetPath = await FileHelper.uploadFileViaPost(parsedUploadPath.activeSource, `${filePath}`, fileData, {
-          bucket: parsedUploadPath.bucket,
-        });
+        const targetPath = await FileHelper.uploadImage(fileData, parsedUploadPath.current, fileName);
         CONFIG.NOTELICKER.KNOWN.FILES.add(pathKey);
-        CONFIG.NOTELICKER.KNOWN.LOOKUPS.set(`${pathKey}}`, targetPath);
+        CONFIG.NOTELICKER.KNOWN.LOOKUPS.set(pathKey, targetPath);
       } else {
         logger.debug(`File already imported ${pathKey}`);
       }
 
-      return `${CONFIG.DDBI.KNOWN.LOOKUPS.get(`${pathKey}`)}`;
+      const returnPath = CONFIG.NOTELICKER.KNOWN.LOOKUPS.get(pathKey) ?? filePath;
+
+      return returnPath;
     } catch (err) {
       logger.error(`Error importing image file ${targetDirectory}/${fileName} : ${err.message}`, { err });
       return undefined;

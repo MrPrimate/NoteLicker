@@ -10,11 +10,26 @@ export default class Icons {
     return url;
   }
 
-  static generateIconData(title) {
+  static async createPersistentIcon(stub, content) {
+    const targetDirectory = utils.setting("ICON_UPLOAD_DIR");
+    const pathKey = `${targetDirectory}/${stub}.svg`;
+    if (CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey)) {
+      return CONFIG.NOTELICKER.KNOWN.LOOKUPS.get(pathKey);
+    } else {
+      const uploadPath = await FileHelper.importRawFile(targetDirectory, `${stub}.svg`, content, "text/plain");
+      return uploadPath;
+    }
+
+  }
+
+  static async generateIconData(title, forceCreate = false) {
     const stub = (title.trim().split(".")[0].split(" ")[0].split(":")[0] ?? "").replace(/(\d+)/, utils.unPad);
     if (stub.length <= 4 && !CONSTANTS.BAD_WORDS.includes(stub)) {
       const content = `${CONSTANTS.ICON_STUBS[stub.length]}`.replace("REPLACEME", stub);
-      const url = Icons.convertSvgToDataURL(content);
+
+      const url = isNewerVersion(game.version, 11) || forceCreate
+        ? await Icons.createPersistentIcon(stub, content)
+        : Icons.convertSvgToDataURL(content);
       return {
         stub,
         content,
@@ -25,13 +40,6 @@ export default class Icons {
   }
 
   static async generateIcon(title) {
-    const data = Icons.generateIconData(title);
-    if (data) {
-      const targetDirectory = utils.setting("ICON_UPLOAD_DIR");
-      const uploadPath = await FileHelper.importRawFile(targetDirectory, `${data.stub}.svg`, data.content, "text/plain");
-      return uploadPath;
-    } else {
-      return undefined;
-    }
+    return (await Icons.generateIconData(title, true))?.url;;
   }
 }
