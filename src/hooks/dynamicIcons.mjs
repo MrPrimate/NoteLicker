@@ -1,5 +1,6 @@
 /* eslint-disable no-continue */
 import Icons from "../lib/Icons.mjs";
+import utils from "../lib/utils.mjs";
 
 function determineAnchorName(note) {
   const text = note.text;
@@ -16,12 +17,27 @@ function determineAnchorName(note) {
   return text;
 }
 
+function textureExists(src) {
+  if (!src
+    || src.includes(CONFIG.NOTELICKER.tempPath)
+    || src.startsWith("blob")
+  ) {
+     return true;
+  } else {
+    return false;
+  }
+}
+
 
 export async function dynamicIcons() {
-  Hooks.on("refreshNote", (note) => {
-    if (note.document.texture.src.startsWith("blob")) return;
+  if (!utils.setting("ENABLE_DYNAMIC_ICONS")) return;
 
-    const data = (note.text?.length > 0) ? Icons.generateIconData(determineAnchorName(note)) : undefined;
+  Hooks.on("refreshNote", async (note) => {
+    if (textureExists(note.document?.texture?.src)) return;
+
+    const data = (note.text?.length > 0)
+    ? await Icons.generateIconData(determineAnchorName(note))
+    : undefined;
 
     if (data) {
       note.iconSrc = data.url;
@@ -31,25 +47,26 @@ export async function dynamicIcons() {
     }
   });
 
-  Hooks.on("canvasReady", (canvas) => {
-    for (const note of (canvas.notes.placeables ?? [])) {
-      if (note.document.texture.src.startsWith("blob")) continue;
-      const data = (note.text?.length > 0) ? Icons.generateIconData(determineAnchorName(note)) : undefined;
+  // Hooks.on("canvasReady", async (canvas) => {
+  //   for (const note of (canvas.notes.placeables ?? [])) {
+  //     if (textureExists(note.document?.texture?.src)) return;
 
-      if (data) {
-        note.iconSrc = data.url;
-        note.document.texture.src = data.url;
-        note.controlIcon.iconSrc = data.url;
-        note.draw();
-      }
-    }
-  });
+  //     const data = (note.text?.length > 0)
+  //       ? await Icons.generateIconData(determineAnchorName(note))
+  //       : undefined;
+
+  //     if (data) {
+  //       note.iconSrc = data.url;
+  //       note.document.texture.src = data.url;
+  //       note.controlIcon.iconSrc = data.url;
+  //       note.draw();
+  //     }
+  //   }
+  // });
 
   Hooks.on("renderNoteConfig", (noteConfig, html, data) => {
-    // const isExistingNote = noteConfig.document.id !== null;
-
     const sourceTexture = noteConfig.object?._source?.texture?.src;
-    if (noteConfig.object.texture.src.startsWith("blob") && sourceTexture) {
+    if (textureExists(noteConfig.object.texture.src) && sourceTexture) {
       noteConfig.object.texture.src = `${noteConfig.object._source.texture.src}`;
       const customIcon = !Object.values(CONFIG.JournalEntry.noteIcons).includes(sourceTexture);
       const icon = {
