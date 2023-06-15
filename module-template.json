@@ -35,5 +35,5 @@
     "./css/default.css"
   ],
   "packs": [],
-  "socket": true
+  "persistentStorage": true
 }
