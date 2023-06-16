@@ -14,6 +14,20 @@ This module currently offers three improvements to journal notes/pins.
 - Add the ability to remove the icon border. This is similar to the functionality in backgroundless-pins. If Backgroundless Pins is active, Note Licker will not enable this functionality, and works in v11.
 - Add the ability to jump to an anchor link. This is similar to the functionality in JAL and DDB Importer. This supports the flags used by DDB Importer/Adventure Muncher as well as JAL. If JAL is active, Note Licker will not enable the anchor linking functionality. This has a different approach and some slight functional differences to JAL, to meet the more detailed requirements of DDB Importer, but may be useful for other systems.
 
+# Demo GIFS
+
+Auto icon effects:
+
+![gif-preview-auto-icon](./docs/auto-icon.gif)
+
+Jump to Anchor:
+
+![gif-preview-jump-to-anchor](./docs/jump-to-anchor.gif)
+
+Remove icon borders:
+
+![gif-preview](./docs/show-icon-border.gif)
+
 ## Known Issues
 
 - Journal header anchor linking won't work with Monks Enhanced Journals.
