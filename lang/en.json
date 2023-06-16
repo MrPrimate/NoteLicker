@@ -45,7 +45,7 @@
     "Notifications": {},
     "Labels": {
       "ShowIconBorder": "Show icon border?",
-      "DontAutoIcon": "Don't auto generate icon?",
+      "DisableAutoIcon": "Disable auto icon generation?",
       "JumpToAnchor": "Jump to Page Anchor"
     },
     "Folders": {}

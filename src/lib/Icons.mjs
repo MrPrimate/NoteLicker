@@ -10,6 +10,10 @@ export default class Icons {
       ?? false;
   }
 
+  static disableAutoIcon(document) {
+    return document.getFlag(CONSTANTS.FLAG_NAME, "disableAutoIcon") ?? false;
+  }
+
   static textureExists(src) {
     if (!src
       || src.includes(CONFIG.NOTELICKER.tempPath)
@@ -55,7 +59,9 @@ export default class Icons {
   }
 
   static async generateIconData(title, forceCreate = false) {
-    const stub = (title.trim().split(".")[0].split(" ")[0].split(":")[0] ?? "").replace(/(\d+)/, utils.unPad);
+    const stub = (title.trim().split(".")[0].split(" ")[0].split(":")[0] ?? "")
+      .replaceAll(/[()[\].:'<>{}]/g, "")
+      .replace(/(\d+)/, utils.unPad);
     if (stub.length <= 4 && !CONSTANTS.BAD_WORDS.includes(stub)) {
       const content = `${CONSTANTS.ICON_STUBS[stub.length]}`.replace("REPLACEME", stub);
 

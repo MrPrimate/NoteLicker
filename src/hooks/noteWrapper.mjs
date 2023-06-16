@@ -35,7 +35,10 @@ export function noteWrapper() {
   if (utils.setting("ENABLE_DYNAMIC_ICONS")) {
     /* eslint-disable no-invalid-this */
     libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._draw', async function(wrapped, ...args) {
-      if (utils.setting("ENABLE_DYNAMIC_ICONS") && !Icons.textureExists(this.document?.texture?.src)) {
+      if (utils.setting("ENABLE_DYNAMIC_ICONS")
+        && !Icons.textureExists(this.document?.texture?.src)
+        && !Icons.disableAutoIcon(this.document)
+      ) {
         const data = (this.text?.length > 0)
           ? await Icons.generateIconData(Icons.determineAnchorName(this))
           : undefined;

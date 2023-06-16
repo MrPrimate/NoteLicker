@@ -1,4 +1,5 @@
 /* eslint-disable no-continue */
+import CONSTANTS from "../constants.mjs";
 import Icons from "../lib/Icons.mjs";
 import utils from "../lib/utils.mjs";
 
@@ -22,5 +23,16 @@ export async function dynamicIcons() {
         html.find("select[name='icon.selected']")[0].value = sourceTexture;
       }
     }
+    // add disable selector
+    const disableAutoIcon = Icons.disableAutoIcon(noteConfig.document);
+    const globalGroup = html.find("input[name='icon.custom']").closest(".form-group");
+    const label = game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Labels.DisableAutoIcon`);
+    globalGroup.after(`
+        <div class="form-group">
+            <label for="flags.${CONSTANTS.FLAG_NAME}.disableAutoIcon">${label}</label>
+            <input type="checkbox" name="flags.${CONSTANTS.FLAG_NAME}.disableAutoIcon" data-dtype="Boolean" ${disableAutoIcon ? "checked" : ""}>
+        </div>
+    `);
+    noteConfig.setPosition({ height: "auto" });
   });
 }
