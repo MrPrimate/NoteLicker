@@ -9,6 +9,10 @@ export function removeIconBorders() {
     logger.warn("Icon border removal already loaded from backgroundless-pins. Skipping.");
     return;
   }
+  if (game.modules.get("pin-cushion")?.active) {
+    logger.warn("Icon border removal already loaded from pin-cushion. Skipping.");
+    return;
+  }
 
   Hooks.on("renderNoteConfig", (noteConfig, html) => {
     const keepBorder = Icons.keepBorder(noteConfig.document);

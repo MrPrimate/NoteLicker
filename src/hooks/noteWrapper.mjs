@@ -54,21 +54,24 @@ export function noteWrapper() {
     /* eslint-enable no-invalid-this */
   }
 
-  /* eslint-disable no-invalid-this */
-  // eslint-disable-next-line no-unused-vars
-  libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._drawControlIcon', function(...args) {
-    const IconClass = Icons.keepBorder(this.document)
-      || !utils.setting("ENABLE_ICON_BORDER_REMOVAL")
-      || game.modules.get("backgroundless-pins")?.active
-      ? ControlIcon
-      : BorderlessControlIcon;
+  if (utils.setting("ENABLE_ICON_BORDER_REMOVAL")
+    && !game.modules.get("backgroundless-pins")?.active
+    && !game.modules.get("pin-cushion")?.active
+  ) {
+    /* eslint-disable no-invalid-this */
+    // eslint-disable-next-line no-unused-vars
+    libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._drawControlIcon', function(...args) {
+      const IconClass = Icons.keepBorder(this.document)
+        ? ControlIcon
+        : BorderlessControlIcon;
 
-    let tint = Color.from(this.document.texture.tint || null);
-    let icon = new IconClass({ texture: this.document.texture.src, size: this.size, tint });
-    icon.x -= (this.size / 2);
-    icon.y -= (this.size / 2);
-    return icon;
-  }, 'OVERRIDE');
-  /* eslint-enable no-invalid-this */
+      let tint = Color.from(this.document.texture.tint || null);
+      let icon = new IconClass({ texture: this.document.texture.src, size: this.size, tint });
+      icon.x -= (this.size / 2);
+      icon.y -= (this.size / 2);
+      return icon;
+    }, 'OVERRIDE');
+    /* eslint-enable no-invalid-this */
+  }
 
 }
