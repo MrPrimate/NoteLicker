@@ -1,4 +1,5 @@
-import logger from "../logger.mjs";
+import logger from "./logger.mjs";
+import utils from "./utils.mjs";
 
 export class DirectoryPicker extends FilePicker {
   constructor(options = {}) {
@@ -31,8 +32,8 @@ export class DirectoryPicker extends FilePicker {
   // formats the data into a string for saving it as a GameSetting
   static format(value) {
     return value.bucket !== null
-      ? `[${value.activeSource}:${value.bucket}] ${value.path}`
-      : `[${value.activeSource}] ${value.path}`;
+      ? `[${value.activeSource}:${value.bucket}] ${value.path ?? value.current ?? ""}`
+      : `[${value.activeSource}] ${value.path ?? value.current ?? ""}`;
   }
 
   // parses the string back to something the FilePicker can understand as an option
@@ -47,12 +48,14 @@ export class DirectoryPicker extends FilePicker {
           activeSource: s3,
           bucket: bucket,
           current: current,
+          fullPath: str,
         };
       } else {
         return {
           activeSource: s3,
           bucket: null,
           current: current,
+          fullPath: str,
         };
       }
     }
@@ -132,9 +135,6 @@ export class DirectoryPicker extends FilePicker {
    */
   static async verifyPath(parsedPath, targetPath = null) {
     try {
-      // in v11 the api can't create directories individually any more, if we are writing though we can assume
-      // it will now be created however.
-      if (isNewerVersion(game.version, 11) && parsedPath.activeSource === "s3") return true;
       const paths = (targetPath) ? targetPath.split("/") : parsedPath.current.split("/");
       let currentSource = paths[0];
 
@@ -146,7 +146,8 @@ export class DirectoryPicker extends FilePicker {
           // eslint-disable-next-line no-await-in-loop
           await DirectoryPicker.createDirectory(parsedPath.activeSource, `${currentSource}`, { bucket: parsedPath.bucket });
         } catch (err) {
-          if (!err.startsWith("EEXIST") && !err.startsWith("The S3 key")) {
+          const errMessage = `${(err?.message ?? utils.isString(err) ? err : err)}`.replace(/^Error: /, "").trim();
+          if (!errMessage.startsWith("EEXIST") && !errMessage.startsWith("The S3 key")) {
             logger.error(`Error trying to verify path [${parsedPath.activeSource}], ${parsedPath.current}`, err);
             logger.error("parsedPath", parsedPath);
             logger.error("targetPath", targetPath);

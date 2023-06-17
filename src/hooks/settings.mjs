@@ -2,9 +2,11 @@ import CONSTANTS from "../constants.mjs";
 import utils from "../lib/utils.mjs";
 import { DirectoryPicker } from "../lib/DirectoryPicker.mjs";
 import FileHelper from "../lib/FileHelper.mjs";
+import logger from "../lib/logger.mjs";
 
 setProperty(CONFIG, "NOTELICKER", {
   module: "Note Licker",
+  cache: false,
   KNOWN: {
     CHECKED_DIRS: new Set(),
     FILES: new Set(),
@@ -68,6 +70,15 @@ export function registerSettings() {
 
 }
 
+export async function loadIconCache(dir) {
+  if (game.user && game.user.can("FILES_BROWSE")) {
+    logger.debug("Generating cache", prompt);
+    const iconUploadDir = dir ?? utils.setting("ICON_UPLOAD_DIR");
+    await FileHelper.generateCurrentFiles(iconUploadDir);
+    CONFIG.NOTELICKER.cache = true;
+  }
+}
+
 export async function createDirectories() {
   const iconUploadDir = utils.setting("ICON_UPLOAD_DIR");
   const parsedDir = DirectoryPicker.parse(iconUploadDir);
@@ -75,5 +86,5 @@ export async function createDirectories() {
   if (game.user.isGM) {
     await DirectoryPicker.verifyPath(parsedDir);
   }
-  await FileHelper.generateCurrentFiles(iconUploadDir);
+  await loadIconCache(iconUploadDir);
 }

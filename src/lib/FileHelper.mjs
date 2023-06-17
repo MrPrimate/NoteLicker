@@ -1,5 +1,5 @@
 import { DirectoryPicker } from "./DirectoryPicker.mjs";
-import logger from "../logger.mjs";
+import logger from "./logger.mjs";
 
 const FileHelper = {
   BAD_DIRS: ["[data]", "[data] ", "", null],
@@ -38,23 +38,33 @@ const FileHelper = {
     a.click();
   },
 
-  fileExistsUpdate: (parsedDir, directoryPath, fileList) => {
-    const targetFiles = fileList.filter((f) => !CONFIG.NOTELICKER.KNOWN.FILES.has(f));
-    for (const file of targetFiles) {
-      CONFIG.NOTELICKER.KNOWN.FILES.add(file);
-      const split = file.split(parsedDir.current);
-      if (split.length > 1) {
-        const fileName = split[1].startsWith("/") ? split[1] : `/${split[1]}`;
-        CONFIG.NOTELICKER.KNOWN.FILES.add(`${directoryPath}${fileName}`);
-        CONFIG.NOTELICKER.KNOWN.LOOKUPS.set(`${directoryPath}${fileName}`, file);
-      }
+  addFileToKnown: (parsedDir, file) => {
+    CONFIG.NOTELICKER.KNOWN.FILES.add(file);
+    const split = file.split(parsedDir.current);
+    if (split.length > 1) {
+      const fileName = split[1].startsWith("/") ? split[1] : `/${split[1]}`;
+      CONFIG.NOTELICKER.KNOWN.FILES.add(`${parsedDir.fullPath}${fileName}`);
+      CONFIG.NOTELICKER.KNOWN.LOOKUPS.set(`${parsedDir.fullPath}${fileName}`, file);
     }
   },
 
-  dirExistsUpdate: (dirList) => {
+  fileExistsUpdate: (parsedDir, fileList) => {
+    const targetFiles = fileList.filter((f) => !CONFIG.NOTELICKER.KNOWN.FILES.has(f));
+    for (const file of targetFiles) {
+      FileHelper.addFileToKnown(parsedDir, file);
+    }
+  },
+
+
+  dirExistsUpdate: (parsedDir, dirList) => {
     const targetFiles = dirList.filter((f) => !CONFIG.NOTELICKER.KNOWN.DIRS.has(f));
     for (const file of targetFiles) {
       CONFIG.NOTELICKER.KNOWN.DIRS.add(file);
+      const split = file.split(parsedDir.current);
+      if (split.length > 1) {
+        const fileName = split[1].startsWith("/") ? split[1] : `/${split[1]}`;
+        CONFIG.NOTELICKER.KNOWN.DIRS.add(`${parsedDir.fullPath}${fileName}`);
+      }
     }
   },
 
@@ -77,8 +87,8 @@ const FileHelper = {
       const fileList = await DirectoryPicker.browse(dir.activeSource, dir.current, {
         bucket: dir.bucket,
       });
-      FileHelper.fileExistsUpdate(dir, directoryPath, fileList.files);
-      FileHelper.dirExistsUpdate(fileList.dirs);
+      FileHelper.fileExistsUpdate(dir, fileList.files);
+      FileHelper.dirExistsUpdate(dir, fileList.dirs);
       // lets do some forge fun because
       if (typeof ForgeVTT !== "undefined" && ForgeVTT?.usingTheForge) {
         if (fileList.bazaar) {
@@ -87,7 +97,7 @@ const FileHelper = {
           fileList.files.forEach((file) => {
             const fileName = file.split("/").pop();
             CONFIG.NOTELICKER.KNOWN.FORGE.TARGETS[directoryPath][fileName] = file;
-            CONFIG.NOTELICKER.KNOWN.FILES.add(file);
+            FileHelper.addFileToKnown(dir, file);
           });
         } else {
           const status = ForgeAPI.lastStatus || (await ForgeAPI.status());

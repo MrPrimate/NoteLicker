@@ -1,6 +1,8 @@
 import CONSTANTS from "../constants.mjs";
 import utils from "./utils.mjs";
 import FileHelper from "./FileHelper.mjs";
+import { DirectoryPicker } from "./DirectoryPicker.mjs";
+import { loadIconCache } from "../hooks/settings.mjs";
 
 export default class Icons {
 
@@ -49,11 +51,18 @@ export default class Icons {
   static async createPersistentIcon(stub, content) {
     const targetDirectory = utils.setting("ICON_UPLOAD_DIR");
     const pathKey = `${targetDirectory}/${stub}.svg`;
+    if (!CONFIG.NOTELICKER.cache) await loadIconCache(targetDirectory);
     if (CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey)) {
       return CONFIG.NOTELICKER.KNOWN.LOOKUPS.get(pathKey);
-    } else {
+    } else if (game.user && game.user.can("FILES_BROWSE")) {
       const uploadPath = await FileHelper.importRawFile(targetDirectory, `${stub}.svg`, content, "text/plain");
       return uploadPath;
+    } else {
+      // fallback, we don't have permissions to browse the file system, so we guess
+      // this won't work if the default upload dir has been changed to an s3 or forge system
+      const parsedUploadPath = DirectoryPicker.parse(targetDirectory);
+      const filePath = `${parsedUploadPath.current}/${stub}.svg`;
+      return filePath;
     }
 
   }

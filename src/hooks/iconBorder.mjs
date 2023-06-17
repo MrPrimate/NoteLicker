@@ -1,7 +1,7 @@
 import CONSTANTS from "../constants.mjs";
 import utils from "../lib/utils.mjs";
 import Icons from "../lib/Icons.mjs";
-import logger from "../logger.mjs";
+import logger from "../lib/logger.mjs";
 
 export function removeIconBorders() {
   if (!utils.setting("ENABLE_ICON_BORDER_REMOVAL")) return;

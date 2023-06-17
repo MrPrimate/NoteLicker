@@ -1,4 +1,4 @@
-import logger from "../logger.mjs";
+import logger from "../lib/logger.mjs";
 import utils from "../lib/utils.mjs";
 import CONSTANTS from "../constants.mjs";
 
