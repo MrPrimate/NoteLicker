@@ -1,3 +1,7 @@
+# 0.1.3
+
+- Bug would prevent disable some note config options appearing.
+
 # 0.1.2
 
 - Handle players who view dynamic icons but don't have file system browsing capabilities in v11.

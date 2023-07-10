@@ -14,10 +14,11 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", () => {
-  if (!game.modules.get('lib-wrapper')?.active && game.user.isGM) {
-    ui.notifications.error(`Module ${CONSTANTS.MODULE_NAME} requires the 'libWrapper' module. Please install and activate it.`);
+  if (game.modules.get('lib-wrapper')?.active && game.user.isGM) {
     removeIconBorders();
     dynamicIcons();
+  } else {
+    ui.notifications.error(`Module ${CONSTANTS.MODULE_NAME} requires the 'libWrapper' module. Please install and activate it.`, { persistent: true });
   }
 
   createDirectories();
