@@ -1,3 +1,7 @@
+# 0.1.4
+
+- Prevent users getting error message about libwrapper.
+
 # 0.1.3
 
 - Bug would prevent disable some note config options appearing.
