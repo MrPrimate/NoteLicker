@@ -117,7 +117,7 @@ export function anchorInjection() {
 
     // when we create from the side bar we fill in the input label name to match
     // the anchor name and set the slug value to the anchor slug
-    Hooks.once("renderNoteConfig", (noteConfig, html, app) => {
+    Hooks.once("renderNoteConfig", (noteConfig, _html, app) => {
       const titleInput = noteConfig.element[0].querySelector("input[name='text']");
       if (dropData.anchor.slug) {
         titleInput.setAttribute('value', dropData.anchor.name);
