@@ -210,7 +210,7 @@ const FileHelper = {
       const pathKey = `${targetDirectory}/${fileName}`;
       const filePath = `${parsedUploadPath.current}/${fileName}`;
 
-      if (!CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey)) {
+      if (!CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey) && game.user.can("FILES_UPLOAD")) {
         logger.debug(`Adding cached file ${fileName} to ${targetDirectory}`, {
           pathKey,
           filePath,
