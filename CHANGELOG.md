@@ -1,4 +1,4 @@
-# 0.1.5
+# 0.1.6
 
 - Sometimes Notelicker would try to create an icon even if a user did not have permissions to upload.
 

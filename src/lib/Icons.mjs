@@ -54,7 +54,7 @@ export default class Icons {
     if (!CONFIG.NOTELICKER.cache) await loadIconCache(targetDirectory);
     if (CONFIG.NOTELICKER.KNOWN.FILES.has(pathKey)) {
       return CONFIG.NOTELICKER.KNOWN.LOOKUPS.get(pathKey);
-    } else if (game.user && game.user.can("FILES_BROWSE")) {
+    } else if (game.user && game.user.can("FILES_BROWSE") && game.user.can("FILES_UPLOAD")) {
       const uploadPath = await FileHelper.importRawFile(targetDirectory, `${stub}.svg`, content, "text/plain");
       return uploadPath;
     } else {
