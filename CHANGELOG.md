@@ -1,3 +1,7 @@
+# 0.1.5
+
+- Sometimes Notelicker would try to create an icon even if a user did not have permissions to upload.
+
 # 0.1.4
 
 - Prevent users getting error message about libwrapper.
