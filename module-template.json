@@ -1,6 +1,5 @@
 {
   "id": "notelicker",
-  "author": "MrPrimate",
   "title": "Note Licker",
   "license": "MIT License",
   "description": "Enhance your scene notes. Adds header jumps, and auto iconizing",
@@ -12,7 +11,7 @@
   "changelog": "https://github.com/MrPrimate/NoteLicker/blob/main/CHANGELOG.md",
   "compatibility": {
     "minimum": "10.291",
-    "verified": 11
+    "verified": 12
   },
   "authors": [
     {
