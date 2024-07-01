@@ -1,7 +1,5 @@
 import { DirectoryPicker } from "./lib/DirectoryPicker.mjs";
 
-const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 100);
-
 const CONSTANTS = {
   MODULE_NAME: "Note Licker",
   SHORT_NAME: "NoteLicker",
@@ -60,14 +58,6 @@ const CONSTANTS = {
 };
 
 CONSTANTS.DEFAULT_SETTINGS = {
-  [CONSTANTS.SETTINGS.USE_CUSTOM_COMPENDIUM_MAPPINGS]: {
-    name: `${CONSTANTS.SHORT_NAME}.Settings.UseCustomCompendiumMappings.Name`,
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: false,
-  },
-
   // debug
   [CONSTANTS.SETTINGS.LOG_LEVEL]: {
     name: `${CONSTANTS.SHORT_NAME}.Settings.LogLevel.Name`,
@@ -92,7 +82,7 @@ CONSTANTS.DEFAULT_SETTINGS = {
     config: true,
     type: Boolean,
     default: true,
-    onChange: debouncedReload,
+    requiresReload: true,
   },
 
   [CONSTANTS.SETTINGS.ENABLE_ANCHOR_LINKS]: {
@@ -102,7 +92,7 @@ CONSTANTS.DEFAULT_SETTINGS = {
     config: true,
     type: Boolean,
     default: true,
-    onChange: debouncedReload,
+    requiresReload: true,
   },
 
   [CONSTANTS.SETTINGS.ENABLE_ICON_BORDER_REMOVAL]: {
@@ -112,7 +102,7 @@ CONSTANTS.DEFAULT_SETTINGS = {
     config: true,
     type: Boolean,
     default: false,
-    onChange: debouncedReload,
+    requiresReload: true,
   },
 
   [CONSTANTS.SETTINGS.ICON_UPLOAD_DIR]: {

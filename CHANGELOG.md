@@ -1,3 +1,7 @@
+# 0.1.8
+
+- Correct use of `requiresReload` for setting changes.
+
 # 0.1.7
 
 - Bump compatibility for v12.
