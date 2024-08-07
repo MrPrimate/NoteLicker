@@ -1,3 +1,7 @@
+# 0.1.9
+
+- Remove deprecated function call in v12.
+
 # 0.1.8
 
 - Correct use of `requiresReload` for setting changes.
