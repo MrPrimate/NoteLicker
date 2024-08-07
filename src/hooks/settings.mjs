@@ -4,7 +4,7 @@ import { DirectoryPicker } from "../lib/DirectoryPicker.mjs";
 import FileHelper from "../lib/FileHelper.mjs";
 import logger from "../lib/logger.mjs";
 
-setProperty(CONFIG, "NOTELICKER", {
+foundry.utils.setProperty(CONFIG, "NOTELICKER", {
   module: "Note Licker",
   cache: false,
   KNOWN: {
