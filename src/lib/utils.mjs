@@ -64,7 +64,7 @@ const utils = {
 
   setFlags: async (actor, flags) => {
     let updateData = {};
-    setProperty(updateData, `flags.${CONSTANTS.FLAG_NAME}`, flags);
+    foundry.utils.setProperty(updateData, `flags.${CONSTANTS.FLAG_NAME}`, flags);
     await actor.update(updateData);
     return actor;
   },
