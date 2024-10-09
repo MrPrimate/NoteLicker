@@ -1,3 +1,7 @@
+# 0.2.0
+
+- v10 support dropped, fixed some deprecation warnings in v12.
+
 # 0.1.9
 
 - Remove deprecated function call in v12.

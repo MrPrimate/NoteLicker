@@ -14,18 +14,9 @@ class BorderlessControlIcon extends ControlIcon {
     this.icon.width = this.icon.height = this.size;
     this.icon.tint = Number.isNumeric(this.tintColor) ? this.tintColor : 0xffffff;
 
-    if (isNewerVersion(11, game.version)) {
-      this.border
-        .clear()
-        .lineStyle(2, this.borderColor, 1.0)
-        .drawRoundedRect(...this.rect, 5)
-        .endFill();
-      this.border.visible = false;
-      return this;
-    } else {
-      this.bg.clear();
-      return this.refresh({ borderVisible: false });
-    }
+    this.bg.clear();
+    return this.refresh({ borderVisible: false });
+
   }
 }
 
@@ -66,9 +57,12 @@ export function noteWrapper() {
         : BorderlessControlIcon;
 
       let tint = Color.from(this.document.texture.tint || null);
-      let icon = new IconClass({ texture: this.document.texture.src, size: this.size, tint });
-      icon.x -= (this.size / 2);
-      icon.y -= (this.size / 2);
+      const size = foundry.utils.isNewerVersion(game.version, 12)
+        ? this.document.iconSize
+        : this.size;
+      let icon = new IconClass({ texture: this.document.texture.src, size: size, tint });
+      icon.x -= (size / 2);
+      icon.y -= (size / 2);
       return icon;
     }, 'OVERRIDE');
     /* eslint-enable no-invalid-this */

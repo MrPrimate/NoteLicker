@@ -10,7 +10,7 @@
   "readme": "https://github.com/MrPrimate/NoteLicker/blob/main/README.md",
   "changelog": "https://github.com/MrPrimate/NoteLicker/blob/main/CHANGELOG.md",
   "compatibility": {
-    "minimum": "10.291",
+    "minimum": "11",
     "verified": 12
   },
   "authors": [

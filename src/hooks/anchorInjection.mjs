@@ -27,15 +27,15 @@ function addSlugField(element, slug, document) {
 }
 
 function setSlugProperties(doc, slug, label) {
-  setProperty(doc, "flags.anchor.slug", slug);
-  setProperty(doc, "flags.ddb.slugLink", slug);
-  setProperty(doc, "flags.ddb.labelName", label);
-  setProperty(doc, `flags.${CONSTANTS.FLAG_NAME}.slugLink`, slug);
+  foundry.utils.setProperty(doc, "flags.anchor.slug", slug);
+  foundry.utils.setProperty(doc, "flags.ddb.slugLink", slug);
+  foundry.utils.setProperty(doc, "flags.ddb.labelName", label);
+  foundry.utils.setProperty(doc, `flags.${CONSTANTS.FLAG_NAME}.slugLink`, slug);
   return doc;
 }
 
 function getSlug(doc) {
-  return getProperty(doc, `flags.${CONSTANTS.FLAG_NAME}.slugLink`)
+  return foundry.utils.getProperty(doc, `flags.${CONSTANTS.FLAG_NAME}.slugLink`)
       ?? doc.flags.ddb?.slugLink
       ?? doc.flags.anchor?.slug
       ?? "";
@@ -107,13 +107,13 @@ export function anchorInjection() {
   // handle new notes, we just inject the slug properties into the source from the sheet data
   Hooks.on("preCreateNote", (note, data) => {
     if (data.slug) {
-      const flagData = setSlugProperties(deepClone(note), data.slug, data.text);
+      const flagData = setSlugProperties(foundry.utils.deepClone(note), data.slug, data.text);
       note.updateSource({ flags: flagData.flags });
     };
   });
 
   Hooks.on("dropCanvasData", (_, dropData) => {
-    if (dropData.type !== "JournalEntryPage" && !hasProperty(dropData, "anchor.slug")) return;
+    if (dropData.type !== "JournalEntryPage" && !foundry.utils.hasProperty(dropData, "anchor.slug")) return;
 
     // when we create from the side bar we fill in the input label name to match
     // the anchor name and set the slug value to the anchor slug

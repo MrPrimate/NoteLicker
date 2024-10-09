@@ -13,7 +13,7 @@ export async function dynamicIcons() {
       const customIcon = !Object.values(CONFIG.JournalEntry.noteIcons).includes(sourceTexture);
       const icon = {
         selected: customIcon ? "" : sourceTexture,
-        custom: customIcon ? sourceTexture : ""
+        custom: customIcon ? sourceTexture : "",
       };
       data.icon = icon;
       if (customIcon) {

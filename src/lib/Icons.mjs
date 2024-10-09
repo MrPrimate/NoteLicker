@@ -8,7 +8,7 @@ export default class Icons {
 
   static keepBorder(document) {
     return document.getFlag(CONSTANTS.FLAG_NAME, "keepBorder")
-      ?? getProperty(document, ".flags.backgroundless-pins.hasBackground")
+      ?? foundry.utils.getProperty(document, ".flags.backgroundless-pins.hasBackground")
       ?? false;
   }
 
@@ -74,7 +74,7 @@ export default class Icons {
     if (stub.length <= 4 && !CONSTANTS.BAD_WORDS.includes(stub)) {
       const content = `${CONSTANTS.ICON_STUBS[stub.length]}`.replace("REPLACEME", stub);
 
-      const url = isNewerVersion(game.version, 11) || forceCreate
+      const url = foundry.utils.isNewerVersion(game.version, 11) || forceCreate
         ? await Icons.createPersistentIcon(stub, content)
         : Icons.convertSvgToDataURL(content);
       return {

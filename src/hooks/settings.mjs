@@ -16,7 +16,7 @@ foundry.utils.setProperty(CONFIG, "NOTELICKER", {
       TARGET_URL_PREFIX: {},
       TARGETS: {},
     },
-  }
+  },
 });
 
 async function resetSettings() {
@@ -34,7 +34,7 @@ class ResetSettingsDialog extends FormApplication {
     return new Dialog({
       title: game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Title`),
       content: `<p class="${CONSTANTS.FLAG_NAME}-dialog-important">${game.i18n.localize(
-        `${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Content`
+        `${CONSTANTS.SHORT_NAME}.Dialogs.ResetSettings.Content`,
       )}</p>`,
       buttons: {
         confirm: {
