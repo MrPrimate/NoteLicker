@@ -1,3 +1,7 @@
+# 1.0.0
+
+- v13 support, no v12 support in this version.
+
 # 0.2.0
 
 - v10 support dropped, fixed some deprecation warnings in v12.

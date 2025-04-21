@@ -2,7 +2,7 @@
   "id": "notelicker",
   "title": "Note Licker",
   "license": "MIT License",
-  "description": "Enhance your scene notes. Adds header jumps, and auto iconizing",
+  "description": "Enhance your scene notes. Adds header jumps, and auto icon numbers",
   "version": "999.0.0",
   "download": "https://github.com/MrPrimate/NoteLicker/releases/download/VERSION/notelicker.zip",
   "manifest": "https://github.com/MrPrimate/NoteLicker/releases/download/latest/module.json",

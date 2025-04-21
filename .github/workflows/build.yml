@@ -14,12 +14,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
@@ -29,7 +29,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Get Version              # Run the script that returns the version from `module.json`
       shell: bash
       id: get-version
@@ -78,4 +78,4 @@ jobs:
         url: 'https://api.foundryvtt.com/_api/packages/release_version'
         method: 'POST'
         customHeaders: '{"Content-Type": "application/json", "Authorization" : "${{ secrets.FOUNDRY_KEY }}"}'
-        data: '{"dry_run": false, "id" : "notelicker", "release": {"version" :  "${{ steps.get-version.outputs.release_version }}", "manifest": "https://github.com/${{ github.repository }}/releases/download/${{ steps.get-version.outputs.release_version }}/module.json", "notes" : "https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md", "compatibility" : {"minimum": "11", "verified": "12", "maximum": ""} } }'
+        data: '{"dry_run": false, "id" : "notelicker", "release": {"version" :  "${{ steps.get-version.outputs.release_version }}", "manifest": "https://github.com/${{ github.repository }}/releases/download/${{ steps.get-version.outputs.release_version }}/module.json", "notes" : "https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md", "compatibility" : {"minimum": "13", "verified": "13", "maximum": ""} } }'
