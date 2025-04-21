@@ -13,12 +13,12 @@ function getOptions(page, current) {
 }
 
 function addSlugField(element, slug, document) {
-  const titleInput = element.querySelector("input[name='text']");
+  const titleInput = element.querySelector("select[name='pageId']");
   const label = game.i18n.localize(`${CONSTANTS.SHORT_NAME}.Labels.JumpToAnchor`);
   const slugHTML = `<div class="form-group">
   <label>${label}</label>
   <div class="form-fields">
-      <select name="slug" >${getOptions(document.page, slug)}</select>
+      <select name="flags.${CONSTANTS.FLAG_NAME}.slugLink" >${getOptions(document.page, slug)}</select>
   </div>
 </div>`;
 
@@ -46,7 +46,7 @@ function updateNotePage(noteConfig, slug) {
   const pageId = noteConfig.form.elements.pageId?.value;
   const journal = game.journal.get(journalId);
   const page = journal?.pages.get(pageId);
-  noteConfig.form.elements["slug"].innerHTML = getOptions(page, slug);
+  noteConfig.form.elements[`flags.${CONSTANTS.FLAG_NAME}.slugLink`].innerHTML = getOptions(page, slug);
 }
 
 export function anchorInjection() {
@@ -73,10 +73,11 @@ export function anchorInjection() {
   });
 
   // when we render a note we add the anchor links box
-  Hooks.on("renderNoteConfig", (noteConfig, html, data) => {
+  Hooks.on("renderNoteConfig", (noteConfig, form, data) => {
     const slug = getSlug(noteConfig.document);
-    if (!noteConfig.element[0].querySelector("input[name='slug']")) {
-      addSlugField(noteConfig.element[0], slug, data.document);
+
+    if (!form.querySelector(`input[name='flags.${CONSTANTS.FLAG_NAME}.slugLink']`)) {
+      addSlugField(form, slug, data.document);
       if (!noteConfig._minimized) {
         const pos = noteConfig.position;
         pos.height = 'auto';
@@ -86,16 +87,18 @@ export function anchorInjection() {
     noteConfig.element[0].style.height = "auto";
     const isExistingNote = noteConfig.document.id !== null;
 
-    html.find("select[name='entryId']").change(() => updateNotePage(noteConfig, slug));
-    html.find("select[name='pageId']").change(() => updateNotePage(noteConfig, slug));
+    const entryIdSelect = form.querySelector("select[name='entryId']");
+    const pageIdSelect = form.querySelector("select[name='pageId']");
+
+    entryIdSelect.addEventListener("change", () => updateNotePage(noteConfig, slug));
+    pageIdSelect.addEventListener("change", () => updateNotePage(noteConfig, slug));
 
     if (isExistingNote) {
-      const closeHookId = Hooks.on("closeDocumentSheet", async (documentSheet, html) => {
+      const closeHookId = Hooks.on("closeDocumentSheetV2", async (documentSheet) => {
         if (!(documentSheet instanceof NoteConfig)) return;
         if (noteConfig.document.id !== documentSheet.document.id) return;
-        Hooks.off("closeNoteConfig", closeHookId);
-        const slugInput = html[0].querySelector("select[name='slug']");
-        const selectedSlug = slugInput?.value;
+        Hooks.off("closeDocumentSheetV2", closeHookId);
+        const selectedSlug = documentSheet.document.getFlag(CONSTANTS.FLAG_NAME, "slugLink");
         if (selectedSlug && selectedSlug.trim() !== "" && selectedSlug !== documentSheet.document.flags.ddb?.slugLink) {
           const update = setSlugProperties({ _id: documentSheet.document.id }, selectedSlug, documentSheet.document.label);
           await canvas.scene.updateEmbeddedDocuments("Note", [update]);
@@ -117,8 +120,8 @@ export function anchorInjection() {
 
     // when we create from the side bar we fill in the input label name to match
     // the anchor name and set the slug value to the anchor slug
-    Hooks.once("renderNoteConfig", (noteConfig, _html, app) => {
-      const titleInput = noteConfig.element[0].querySelector("input[name='text']");
+    Hooks.once("renderNoteConfig", (noteConfig, form, app) => {
+      const titleInput = form.querySelector("input[name='text']");
       if (dropData.anchor.slug) {
         titleInput.setAttribute('value', dropData.anchor.name);
         updateNotePage(noteConfig, dropData.anchor.slug);

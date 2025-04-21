@@ -28,18 +28,18 @@ export default class Icons {
   }
 
   static determineAnchorName(note) {
-    const text = note.text;
+    const name = note.document.label;
 
-    if (!text || text.trim() === "") return undefined;
+    if (!name || name.trim() === "") return undefined;
 
     const pageName = note.page?.name;
-    if (!pageName) return text;
+    if (!pageName) return name;
 
-    if (text.startsWith(`${pageName}:`)) {
+    if (name.startsWith(`${pageName}:`)) {
       const reg = new RegExp(`^${pageName}:`);
-      return text.replace(reg, "").trim();
+      return name.replace(reg, "").trim();
     }
-    return text;
+    return name;
   }
 
   static convertSvgToDataURL(svgText) {

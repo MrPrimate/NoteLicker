@@ -1,7 +1,7 @@
 import logger from "./logger.mjs";
 import utils from "./utils.mjs";
 
-export class DirectoryPicker extends FilePicker {
+export class DirectoryPicker extends foundry.applications.apps.FilePicker.implementation {
   constructor(options = {}) {
     super(options);
   }

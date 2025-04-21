@@ -2,7 +2,7 @@ import CONSTANTS from "../constants.mjs";
 import Icons from "../lib/Icons.mjs";
 import utils from "../lib/utils.mjs";
 
-class BorderlessControlIcon extends ControlIcon {
+class BorderlessControlIcon extends foundry.canvas.containers.ControlIcon {
   async draw() {
     if (this.destroyed) return this;
 
@@ -26,11 +26,19 @@ export function noteWrapper() {
   if (utils.setting("ENABLE_DYNAMIC_ICONS")) {
     /* eslint-disable no-invalid-this */
     libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._draw', async function(wrapped, ...args) {
+
+      console.warn("Note.prototype._draw", {
+        wrapped,
+        args,
+        this: this,
+        notTextureExists: !Icons.textureExists(this.document?.texture?.src),
+        notDisableAutoIcon: !Icons.disableAutoIcon(this.document),
+      });
       if (utils.setting("ENABLE_DYNAMIC_ICONS")
         && !Icons.textureExists(this.document?.texture?.src)
         && !Icons.disableAutoIcon(this.document)
       ) {
-        const data = (this.text?.length > 0)
+        const data = (this.document?.label?.length > 0)
           ? await Icons.generateIconData(Icons.determineAnchorName(this))
           : undefined;
 
