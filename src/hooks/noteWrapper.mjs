@@ -27,13 +27,6 @@ export function noteWrapper() {
     /* eslint-disable no-invalid-this */
     libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._draw', async function(wrapped, ...args) {
 
-      console.warn("Note.prototype._draw", {
-        wrapped,
-        args,
-        this: this,
-        notTextureExists: !Icons.textureExists(this.document?.texture?.src),
-        notDisableAutoIcon: !Icons.disableAutoIcon(this.document),
-      });
       if (utils.setting("ENABLE_DYNAMIC_ICONS")
         && !Icons.textureExists(this.document?.texture?.src)
         && !Icons.disableAutoIcon(this.document)
