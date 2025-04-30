@@ -25,7 +25,7 @@ export function noteWrapper() {
 
   if (utils.setting("ENABLE_DYNAMIC_ICONS")) {
     /* eslint-disable no-invalid-this */
-    libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._draw', async function(wrapped, ...args) {
+    libWrapper.register(CONSTANTS.FLAG_NAME, 'foundry.canvas.placeables.Note.prototype._draw', async function(wrapped, ...args) {
 
       if (utils.setting("ENABLE_DYNAMIC_ICONS")
         && !Icons.textureExists(this.document?.texture?.src)
@@ -52,7 +52,7 @@ export function noteWrapper() {
   ) {
     /* eslint-disable no-invalid-this */
     // eslint-disable-next-line no-unused-vars
-    libWrapper.register(CONSTANTS.FLAG_NAME, 'Note.prototype._drawControlIcon', function(...args) {
+    libWrapper.register(CONSTANTS.FLAG_NAME, 'foundry.canvas.placeables.Note.prototype._drawControlIcon', function(...args) {
       const IconClass = Icons.keepBorder(this.document)
         ? ControlIcon
         : BorderlessControlIcon;

@@ -21,7 +21,7 @@ export class DirectoryPicker extends foundry.applications.apps.FilePicker.implem
 
   static async uploadToPath(path, file) {
     const options = DirectoryPicker.parse(path);
-    return FilePicker.upload(options.activeSource, options.current, file, { bucket: options.bucket }, { notify: false });
+    return foundry.applications.apps.FilePicker.implementation.upload(options.activeSource, options.current, file, { bucket: options.bucket }, { notify: false });
   }
 
   // returns the type "Directory" for rendering the SettingsConfig
@@ -123,7 +123,7 @@ export class DirectoryPicker extends foundry.applications.apps.FilePicker.implem
     if (typeof ForgeVTT !== "undefined" && ForgeVTT?.usingTheForge) {
       return DirectoryPicker.forgeCreateDirectory(target);
     }
-    return FilePicker.createDirectory(source, target, options);
+    return foundry.applications.apps.FilePicker.implementation.createDirectory(source, target, options);
   }
 
   /**

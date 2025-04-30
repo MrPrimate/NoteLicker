@@ -1,3 +1,7 @@
+# 1.0.1
+
+- Remove additional deprecation warnings.
+
 # 1.0.0
 
 - v13 support, no v12 support in this version.
