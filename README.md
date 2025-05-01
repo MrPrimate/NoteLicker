@@ -8,7 +8,7 @@ Simple enhanced Scene Notes/Pins for Foundry to add autonumbering.
 
 ## About
 
-This module currently offers three improvements to journal notes/pins.
+This module offers three improvements to journal notes/pins.
 
 - Create icons for scenes on the fly based on the journal name, e.g. 1a. Kobold Nursery would generate a nice icon with 1a in a circle. These are similar to the icons that are created by DDB Importer when importing an adventure.
 - Add the ability to remove the icon border. This is similar to the functionality in backgroundless-pins. If Backgroundless Pins is active, Note Licker will not enable this functionality, and works in v11. If Pin Cushion is installed, Note Licker will let this module handle background removal.
@@ -44,7 +44,7 @@ Please open bugs and issues on [github](https://github.com/MrPrimate/NoteLicker/
 You can create icons using the API as follows:
 
 ```javascript
-let path = await game.modules.get("notelicker")?.api.generateIcon("1a. Terror of fun");
+let path = await game.modules.get("notelicker")?.api.Icons.generateIcon("1a. Terror of fun");
 ```
 
 This will return the path to the new icon, which you can use to update a note or other.

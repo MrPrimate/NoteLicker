@@ -1,3 +1,7 @@
+# 1.0.2
+
+- v13 fixes for v13 public release.
+
 # 1.0.1
 
 - Remove additional deprecation warnings.
