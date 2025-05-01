@@ -100,6 +100,7 @@ export function anchorInjection() {
           const update = setSlugProperties({ _id: documentSheet.document.id }, selectedSlug, documentSheet.document.label);
           await canvas.scene.updateEmbeddedDocuments("Note", [update]);
         }
+        game.canvas.notes.draw();
       });
     }
   });

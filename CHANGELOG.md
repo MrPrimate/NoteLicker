@@ -1,3 +1,7 @@
+# 0.2.1
+
+- Disable auto icon option was missing in v12.
+
 # 0.2.0
 
 - v10 support dropped, fixed some deprecation warnings in v12.
