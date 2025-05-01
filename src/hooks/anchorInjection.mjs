@@ -95,7 +95,7 @@ export function anchorInjection() {
 
     if (isExistingNote) {
       const closeHookId = Hooks.on("closeDocumentSheetV2", async (documentSheet) => {
-        if (!(documentSheet instanceof NoteConfig)) return;
+        if (!(documentSheet instanceof foundry.applications.sheets.NoteConfig)) return;
         if (noteConfig.document.id !== documentSheet.document.id) return;
         Hooks.off("closeDocumentSheetV2", closeHookId);
         const selectedSlug = documentSheet.document.getFlag(CONSTANTS.FLAG_NAME, "slugLink");
@@ -103,6 +103,7 @@ export function anchorInjection() {
           const update = setSlugProperties({ _id: documentSheet.document.id }, selectedSlug, documentSheet.document.label);
           await canvas.scene.updateEmbeddedDocuments("Note", [update]);
         }
+        game.canvas.notes.draw();
       });
     }
   });

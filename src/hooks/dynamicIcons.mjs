@@ -11,9 +11,9 @@ export async function dynamicIcons() {
     const sourceTexture = noteConfig.document?.texture?.src;
 
     const formGroupCustomElement = form.querySelector("[data-icon-custom]");
-    const customItemElement = form.querySelector("input[name='icon.custom']");
-    if (Icons.textureExists(noteConfig.document.texture.src) && sourceTexture) {
-      noteConfig.object.texture.src = `${noteConfig.document._source.texture.src}`;
+    const customItemElement = form.querySelector("file-picker[name='icon.custom'] > input");
+    if (sourceTexture && Icons.textureExists(noteConfig.document.texture.src)) {
+      // noteConfig.object.texture.src = `${noteConfig.document._source.texture.src}`;
       const customIcon = !Object.values(CONFIG.JournalEntry.noteIcons).includes(sourceTexture);
       data.icon = {
         selected: customIcon ? "" : sourceTexture,
