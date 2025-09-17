@@ -123,10 +123,12 @@ export function anchorInjection() {
     // the anchor name and set the slug value to the anchor slug
     Hooks.once("renderNoteConfig", (noteConfig, form, app) => {
       const titleInput = form.querySelector("input[name='text']");
-      if (dropData.anchor.slug) {
+      if (dropData.anchor.slug && dropData.anchor.name) {
         titleInput.setAttribute('value', dropData.anchor.name);
         updateNotePage(noteConfig, dropData.anchor.slug);
-      } else {
+      } else if (app.document.pageId) {
+        titleInput.setAttribute('value', app.pages[app.document.pageId] ?? "");
+      } else if (app.label) {
         titleInput.setAttribute('value', app.label);
       }
     });

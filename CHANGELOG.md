@@ -1,3 +1,7 @@
+# 1.0.3
+
+- Some dropped notes could have their label set to undefined.
+
 # 1.0.2
 
 - v13 fixes for v13 public release.
