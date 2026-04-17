@@ -3,20 +3,11 @@ import Icons from "../lib/Icons.mjs";
 import utils from "../lib/utils.mjs";
 
 class BorderlessControlIcon extends foundry.canvas.containers.ControlIcon {
-  async draw() {
-    if (this.destroyed) return this;
-
-    this.texture = this.texture ?? await loadTexture(this.iconSrc);
-
-    // Draw icon
-    this.icon.texture = this.texture;
-    // eslint-disable-next-line no-multi-assign
-    this.icon.width = this.icon.height = this.size;
-    this.icon.tint = Number.isNumeric(this.tintColor) ? this.tintColor : 0xffffff;
-
+  /** @override */
+  _refresh() {
+    super._refresh();
     this.bg.clear();
-    return this.refresh({ borderVisible: false });
-
+    this.border.visible = false;
   }
 }
 
@@ -54,16 +45,18 @@ export function noteWrapper() {
     // eslint-disable-next-line no-unused-vars
     libWrapper.register(CONSTANTS.FLAG_NAME, 'foundry.canvas.placeables.Note.prototype._drawControlIcon', function(...args) {
       const IconClass = Icons.keepBorder(this.document)
-        ? ControlIcon
+        ? foundry.canvas.containers.ControlIcon
         : BorderlessControlIcon;
 
-      let tint = Color.from(this.document.texture.tint || null);
+      const tint = foundry.utils.Color.from(this.document.texture.tint || null);
       const size = foundry.utils.isNewerVersion(game.version, 12)
         ? this.document.iconSize
         : this.size;
-      let icon = new IconClass({ texture: this.document.texture.src, size: size, tint });
-      icon.x -= (size / 2);
-      icon.y -= (size / 2);
+      const icon = new IconClass({ texture: this.document.texture.src, size, tint });
+      if (!foundry.utils.isNewerVersion(game.version, 13)) {
+        icon.x -= (size / 2);
+        icon.y -= (size / 2);
+      }
       return icon;
     }, 'OVERRIDE');
     /* eslint-enable no-invalid-this */

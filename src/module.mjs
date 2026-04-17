@@ -25,3 +25,7 @@ Hooks.once("ready", () => {
   registerAPI();
   anchorInjection();
 });
+
+Hooks.on("canvasReady", () => {
+  canvas.notes?.setAllRenderFlags({ refreshState: true });
+});
