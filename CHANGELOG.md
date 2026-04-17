@@ -1,3 +1,7 @@
+# 1.1.0
+
+- v14 support
+
 # 1.0.3
 
 - Some dropped notes could have their label set to undefined.
